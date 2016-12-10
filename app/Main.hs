@@ -16,6 +16,7 @@ import System.FilePath ((</>))
 import System.IO.Temp (withSystemTempDirectory)
 import System.Process (createProcess, waitForProcess, proc, cwd, std_out, delegate_ctlc, StdStream(CreatePipe))
 import Text.LaTeX.Base.Render (renderFile)
+import Text.LaTeX.Base.Writer (execLaTeXT)
 
 import Lib
 
@@ -43,4 +44,5 @@ generateTexFile rootDir texFileName =
   ≫= return ∘ flatten
   ≫= filterM doesFileExist
   ≫= mapM (\x → liftM ((,) x) (Data.Text.IO.readFile x))
-  ≫= renderFile texFileName ∘ filelistToLatex
+  ≫= execLaTeXT ∘ filelistToLatex
+  ≫= renderFile texFileName
